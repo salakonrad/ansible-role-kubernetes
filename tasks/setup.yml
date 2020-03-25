@@ -1,0 +1,50 @@
+---
+- name: Hosts file
+  blockinfile:
+    path: /etc/hosts
+    block: |
+      "{{ hostvars[item]['ansible_eth0']['ipv4']['address'] }} {{ hostvars[item]['ansible_hostname'] }}"
+  with_items:
+    - node1
+    - node2
+    - node3
+
+- name: Disable swap for k8s
+  mount:
+    name: swap
+    state: absent
+
+- name: Disable swap
+  replace:
+    path: /etc/fstab
+    regexp: '^/swapfile'
+    replace: '#/swapfile'
+
+- name: Turn off swap
+  shell: swapoff -a
+
+- name: Load necesarry modules
+  shell: modprobe br_netfilter
+
+- name: Routing traffic fix
+  blockinfile:
+    path: /etc/sysctl.conf
+    block: |
+      net.bridge.bridge-nf-call-ip6tables = 1
+      net.bridge.bridge-nf-call-iptables = 1
+
+- name: Load sysctl changes
+  shell: sysctl -p
+
+- name: Disable selinux for k8s to access filesystem
+  shell: "setenforce 0 && sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config"
+  when: ansible_os_family == 'RedHat'
+
+- name: Start and enable services
+  systemd:
+    name: "{{item}}"
+    state: started
+    enabled: yes
+  with_items:
+    - docker
+    - kubelet

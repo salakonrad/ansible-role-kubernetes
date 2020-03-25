@@ -1,0 +1,4 @@
+---
+galaxy_info:
+  author: Konrad Sala
+  description: Ansible role for setup k8s

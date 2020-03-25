@@ -1,0 +1,15 @@
+---
+- name: Add kubernetes repo
+  yum_repository:
+    name: kubernetes
+    description: k8s Repo
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    state: present
+
+- name: Install packages
+  yum:
+    name:
+      - docker
+      - kubeadm
+    state: present

@@ -1,0 +1,18 @@
+---
+- import_tasks: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- import_tasks: centos.yml
+  when: ansible_os_family == 'RedHat'
+
+- import_tasks: setup.yml
+
+- import_tasks: master.yml
+  when: role == 'master'
+
+- import_tasks: node.yml
+  when: role == 'worker'
+
+- name: apply network for k8s
+  shell: kubectl apply -f {{ kubernetes_calico_file }}
+  when: role == 'master'

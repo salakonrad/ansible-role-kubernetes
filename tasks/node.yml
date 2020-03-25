@@ -1,0 +1,8 @@
+---
+- name: Copy file to workers
+  copy:
+    src: "/tmp/kube_join_command_file.sh"
+    dest: "/tmp/kube_join_command_file.sh"
+
+- name: Run join command
+  command: sh /tmp/kube_join_command_file.sh

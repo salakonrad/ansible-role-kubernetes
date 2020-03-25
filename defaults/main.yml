@@ -1,0 +1,2 @@
+---
+kubernetes_calico_file: https://docs.projectcalico.org/v3.11/manifests/calico.yaml
