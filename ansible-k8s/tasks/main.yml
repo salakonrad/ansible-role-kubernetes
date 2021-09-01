@@ -1,0 +1,14 @@
+---
+- include_tasks: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include_tasks: centos.yml
+  when: ansible_os_family == 'RedHat'
+
+- include_tasks: setup.yml
+
+- include_tasks: master.yml
+  when: role == 'master'
+
+- include_tasks: node.yml
+  when: role == 'worker'

@@ -1,0 +1,29 @@
+---
+- name: Centos | Add kubernetes repo
+  yum_repository:
+    name: kubernetes
+    description: k8s Repo
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    state: present
+
+- name: Centos | Add docker repository
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+
+- name: Centos | Installing Docker
+  shell: |
+    yum install -y yum-utils device-mapper-persistent-data lvm2
+    yum install -y docker-ce docker-ce-cli containerd.io
+
+- name: Centos | Add vagrant user to docker group
+  user:
+    name: vagrant
+    group: docker
+
+- name: Centos | Install packages
+  yum:
+    name:
+      - kubeadm
+    state: present

@@ -40,6 +40,17 @@
   shell: "setenforce 0 && sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config"
   when: ansible_os_family == 'RedHat'
 
+- name: Create direcotry Docker
+  file:
+    path: /etc/docker
+    state: directory
+    recurse: yes
+
+- name: Set cgroup driver as systemd
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+
 - name: Start and enable services
   systemd:
     name: "{{item}}"

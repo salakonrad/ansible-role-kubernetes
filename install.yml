@@ -2,4 +2,4 @@
 - hosts: k8s-nodes
   become: yes
   roles:
-    - ansible-kubernetes
+    - ansible-k8s

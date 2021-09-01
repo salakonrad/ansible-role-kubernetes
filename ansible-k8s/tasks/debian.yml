@@ -1,5 +1,5 @@
 ---
-- name: Dependencies
+- name: Debian | Dependencies
   apt:
     name:
       - apt-transport-https
@@ -10,26 +10,26 @@
     state: present
     update_cache: true
     
-- name: Add docker key
+- name: Debian | Add docker key
   apt_key:
     url: https://download.docker.com/linux/debian/gpg
     state: present
  
-- name: Add docker repo
+- name: Debian | Add docker repo
   shell: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
 
-- name: Add Kubernetes apt key
+- name: Debian | Add Kubernetes apt key
   apt_key:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     state: present
 
-- name: Add Kubernetes repository.
+- name: Debian | Add Kubernetes repository.
   apt_repository:
     repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
     state: present
     update_cache: true
 
-- name: Install packages
+- name: Debian | Install packages
   apt:
     pkg:
       - docker-ce 
