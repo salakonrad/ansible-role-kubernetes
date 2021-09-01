@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: k8s-nodes
+  become: yes
   roles:
     - ansible-kubernetes
-  become: yes
